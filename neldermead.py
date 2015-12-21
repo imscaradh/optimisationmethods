@@ -1,5 +1,4 @@
 import functionhelper.function as fhelper
-import math
 
 
 def main():
@@ -16,8 +15,6 @@ def neldermead(x1, x2):
         temp = x1
         x1 = x2
         x2 = temp
-#    elif math.fabs(x1 - x2) < 0.01:
-#        return (x1, fhelper.f(x1))
 
     xc = 0.5 * (x1 + x2)
     xr = x1 + (x1 - x2)
@@ -29,8 +26,9 @@ def neldermead(x1, x2):
             return neldermead(x1, xr)
     else:
         if fhelper.f(x1) - fhelper.f(x2) < 0.01:
-            return (x1, fhelper.f(x1))
+            return x1, fhelper.f(x1)
         return neldermead(x1, xc)
+
 
 if __name__ == '__main__':
     main()
