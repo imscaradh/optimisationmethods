@@ -3,7 +3,17 @@
 %%%%% Preamble
 
 %% Packages to use
-\usepackage{amsmath,amsfonts,amssymb}   %% AMS mathematics macros
+\usepackage{amsmath,amsfonts,amssymb,graphicx}   %% AMS mathematics macros
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{titlesec}
+
+\setcounter{secnumdepth}{4}
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus 0.2ex}{1.5ex plus 0.2ex}
+
 
 %% Title Information.
 \title{Bericht Optimierungsmethoden}
@@ -29,16 +39,66 @@ Um die Extremalstellen einer spezifischen Funktion zu errechnen, gibt es diverse
 
 \subsubsection{Gradientenverfahren}
 Durch diese Methode wird im generellen versucht, sich an eine Extremalstelle anzunähren. $x_0$ wird als Startpunkt definiert. Vorausgesetzt wird hierbei, dass sich der Punkt links von einer Extremalstelle befindet. Veranschaulichen wir uns die nachfolgende quadratische Funktion:
-$$
-f(x)=x^2
-$$
+\[
+    f(x)=x^2
+\]
 
+Abbildung X verdeutlicht anhand der quadratischen Funtkion das `Abtasten' und Annähern an eine Extremalstelle. Durch das festgesetzte Lambda wir die Granularität festgesetzt, also den Abstand zum vorangehenden Punkt. Dies hat natürlich Konsequenzen auf die Laufzeit unseres Algorithmus. Wir werden die Laufzeiten der verschiednen Verfahren in den nachfolgenden Kapitel gegenüberstellen und auswerten. 
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{gradient}
+    \caption{Funktion $x^2$ mit Annäherung an Extremalstelle}\label{gradientx}
+\end{figure}
+
+\paragraph{Laufzeit}
+Der Algorithmus läuft in $O(???)$
+
+\paragraph{Bedingungen}
+In Abbildung~\ref{gradientx} wird veranschaulicht, wie der Algorithmus funktioniert. Als Vorbedingung ist ein Startpunkt notwenig, welcher zwingend links von einer Extremalstelle liegt. Ausserdem muss mit diesem trivialen Algorithmus vorher sichergestellt werden, dass die Funktion überhaupt Extremalstellen besitzt, was ansosten zu einem unendlichen Loop führen kann. In unserem Beispiel mit der quadratischen Funktion $x^2$ wählen wir zum Beispiel den Punkt $x=-5$ aus. Wir können uns versichern, dass der Punkt links von einer Extremalstelle liegt und die Funktion überhaupt eine Extremalstelle besitzt. Natürlich ist diese von blossem Auge sofort erkennbar. 
+
+\paragraph{Funktion von Lambda}
+Der Algorithmus beginnt also vom Punkt $x=-5$ an, die 1. Ableitung zu berechnen. Hat er diese berechnet und ist diese ungleich 0, so wird mit Lambda ein neuer Punkt definiert, welcher sich etwas weiter Rechts auf der x-Achse befindet. Der Algorithmus ist so aufgebaut, dass er eine gewisse Genauigkeit aufweisen muss, um eine Extremalstelle eindeutig zu identifizieren. Diese Genauigkeit muss *unbedingt* kleiner sein als Lambda, da sonst die Stelle einfach übersprungen werden kann.
 
 \subsubsection{Nelder-Mead}
+TODO
+
 
 \subsubsection{Nullstelle der Ableitung}
+Durch den Bisektionsalgorithmus kann mithilfe der Ableitung eine Nullstelle, das heisst eine Extremalstelle ermittelt werden. Mithilfe eines anderen Algorithmus, in unserem Falle der Bisektionsalgorithmus, näheren wir uns ähnlich wie mit dem Gradientenverfahren an die Nullstelle an. 
 
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{bisektion}
+    \caption{Bisektionsalgorithmus}\label{bisektion}
+\end{figure}
+
+Wie der Abbildung~\ref{bisektion} entnommen werden kann, schränkt sich der Bereich einr möglichen Nullstelle durch eine linke und rechte Schranke immer mehr ein.
+
+\paragraph{Laufzeit}
+Da der Bisektionsalgorithmus immer halbiert wird, das heisst die durchzusuchenden Wertebereiche logarithmisch schrumpfen, wird die Laufzeit vom Intervall $n=b-a$ gleich $O(\log(n))$ betragen. Die Berechnung der Ableitung wird hier wie bei den anderen Methoden ausser Acht gelassen. Wir können hierbei also feststellen, dass der Algorithmus effizient ist. Leider trübt dieser Vorteil, da er doch sehr eingeschränkt verwendet werden muss, was im nächsten Abschnitt näher erläutert wird.
+
+\paragraph{Bedingungen}
+Es muss vorgänig ein Intervall definiert werden, in welchem Extremalstellen anzutreffen sind. Unglücklicherweise kann bei zwei solchen Stellen nicht differenziert werden, dass sich tatsälich mehrere Stellen in dem Intervall befinden. Aus diesem Grund muss für unseren Algorithmus folgende Vorbedingung erfüllt werden: Der Intervall, welcher im Voraus definiert wird, darf nur genau eine Extremalstelle beinhalten. Wir haben uns Gedanken gemacht, wie wir dieses durchaus unschöne Problem lösen könnten. Man dürfte keine der ignorierten Seiten des Bisektionsalgorithmus ausser Acht lassen, da sich dort weitere Stellen befinden könnten. Dies würde den grundsätzlichen Nutzen des Bisektionsalgorithmus zerstören. Aus diesem Grund beschlossen wir, die Vorbedingung wie bereits erwähnt aufzustellen.
+
+\pagebreak
+\section{Anwendungsbeispiele}
+\subsection{Der Rettungsschwimmer}
+Ein Rettungsschwimmer will einer ertrinkenden Person im Wasser helfen. An Land rennt er mit $4.1 m/s$, im Wasser schwimmt er mit $2.1 m/s$. Welcher Weg an Land und im Wasser ist optimal, um in möglichst geringer Zeit zum Ertrinkenden zu gelangen?\linebreak
+    Diese Aufgabe klingt an sich trivial. Ein kleines Hindernis gibt es hierbei aber: Es sind keine Längenangaben vorhanden, was bedeutet, dass wir ein parametriesertes Ergebnis erwarten müssen. Abbildung~\ref{retts} zeigt, wie wir die Längen aufgeteilt haben.
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{rettungsschwimmer}
+    \caption{Bisektionsalgorithmus}\label{retts}
+\end{figure}
+
+\subsection{Versicherungsprämienrechner}
 
 \section{Diskussion}
+\subsubsection{Anwendbarkeit der Methoden}
+\subsubsection{Vorteile}
+\subsubsection{Nachteile}
+\subsubsection{Gegenüberstellung der Laufzeiten}
 
 \end{document}
