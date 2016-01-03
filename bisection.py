@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 global ax
 
+
 def main():
     fhelper.func = raw_input("Enter a function: ")
     a = int(input("Enter x-LEFT: "))

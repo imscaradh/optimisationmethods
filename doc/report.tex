@@ -16,7 +16,7 @@
 
 
 %% Title Information.
-\title{Bericht Optimierungsmethoden}
+\title{Optimierungsmethoden}
 \author{Timon Tschanz, Pascal Zingg}
 %% \date{}           %% By default, LaTeX uses the current date
 
@@ -84,14 +84,54 @@ Es muss vorgänig ein Intervall definiert werden, in welchem Extremalstellen anz
 \pagebreak
 \section{Anwendungsbeispiele}
 \subsection{Der Rettungsschwimmer}
-Ein Rettungsschwimmer will einer ertrinkenden Person im Wasser helfen. An Land rennt er mit $4.1 m/s$, im Wasser schwimmt er mit $2.1 m/s$. Welcher Weg an Land und im Wasser ist optimal, um in möglichst geringer Zeit zum Ertrinkenden zu gelangen?\linebreak
+Ein Rettungsschwimmer will einer ertrinkenden Person im Wasser helfen. An Land rennt er mit $4.1 m/s$, im Wasser schwimmt er mit $2.1 m/s$. Welcher Weg an Land und im Wasser ist optimal, um in möglichst geringer Zeit zum Ertrinkenden zu gelangen? \\
     Diese Aufgabe klingt an sich trivial. Ein kleines Hindernis gibt es hierbei aber: Es sind keine Längenangaben vorhanden, was bedeutet, dass wir ein parametriesertes Ergebnis erwarten müssen. Abbildung~\ref{retts} zeigt, wie wir die Längen aufgeteilt haben.
 
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.9\textwidth]{rettungsschwimmer}
-    \caption{Bisektionsalgorithmus}\label{retts}
+    \caption{Rettungsschwimmer}\label{retts}
 \end{figure}
+
+Da keine Längenangaben vorhanden sind, versuchten wir mittels verschiedenen Annahmen, uns an eine mögliche allgemeine Lösung für das Problem heranzutasten. Wie in~\ref{retts} eingezeichnet, gibt es die vier variablen Längen $a, b, c, d$. Kümmern wir uns zuerst um das Aufstellen einer Gleichung für das Optimierungsproblem. Uns ist bekannt, dass sich die Geschwindigkeit $v$ aus $s/t$ zusammensetzt. Des weiteren Wissen wir, nach was wir Optmimieren müssen: Der Zeit $t$. \\
+Nach Pythagoras können wir auch die Längen berechnen, welche sich aus den Teilstrecken ergeben:
+\begin{align}
+    s_1=\sqrt{a^2+c^2} \\
+    s_2=\sqrt{b^2+d^2}
+\end{align}
+
+Uns liegt nun auch auf der Hand, wie wir die Gleichung aufstellen müssen, um nach der Zeit zu optimieren. Allgemein lassen sich Optimierungsprobleme lösen, in dem die Ableitung der Gleichung gleich 0 gesetzt wird und nach einer gewünschten Variable aufgelöst wird. Wir beginnen zunächst, die Gleichung zusammenzusetzen. Um die optimale Zeit zu erhalten, müssen wir versuchen, die Summe der Zeit während des Laufens und die Zeit wärend des Schwimmens in Form einer Gleichung darzustellen. Da die Geschwindigkeit der jeweiligen Teilstrecken bekannt ist, kann dafür jeweils $s/v$ verwendet werden. Das sieht dann folgendermassen aus:
+
+\begin{align}
+    t = \frac{s_1}{2.1} + \frac{s_2}{4.1}
+\end{align}
+
+Setzen wir nun $s_1$ und $s_2$ in die Gleichung ein, erhalten wir:
+
+\begin{align}
+    t = \frac{\sqrt{a^2+c^2}}{2.1} + \frac{\sqrt{b^2+d^2}}{4.1}
+\end{align}
+
+Somit haben wir eine Gleichung gefunden, welche unser Problem zusammenfasst. Jedoch ist ersichtlich, dass wir nicht nur x als Variable haben, sondern gleich 4 unbekannte. Wir nähern uns an das Problem heran, indem wir nun Annahmen treffen, wie die Strecken zueinander stehen. \\
+Der einfachste Fall liegt auf der Hand: Wir nehmen an, dass sich Punkt A und Punkt B gleich weit weg vom Ufer befinden, also $a=b$. Ausserdem gehen wir davon aus, dass $c+d=a+b$ ergibt. Mit diesen Annahmen ergibt sich folgende Gleichung für die Ableitung:
+
+\begin{align}
+    \frac{df}{dx}(\frac{\sqrt{m^2+{(2m-x)}^2}}{2.1} + \frac{\sqrt{m^2+x^2}}{4.1})
+\end{align}
+
+Wir haben nun $m$ verwendet, welches sowohl $a$ und $b$ repräsentiert. $x$ dient als Strecke $d$. Die 1. Ableitung ergibt:
+
+\begin{align}
+    \frac{0.243902x}{\sqrt{m^2+x^2}}+\frac{-0.952381 m+0.47619 x}{\sqrt{5 m^2-4 m x+x^2}} 
+\end{align}
+
+Setzen wir diese Gleichung zu 0 und lösen nach $x$ auf, erhalten wir als Resultat:
+\[
+    x = 1.5259m
+\]
+
+
+TODO-> Alle 4 Parameterberücksichtigen, Plots
 
 \subsection{Versicherungsprämienrechner}
 
