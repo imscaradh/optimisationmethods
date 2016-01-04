@@ -1,4 +1,5 @@
 from scipy.misc.common import derivative
+import math
 
 global func
 

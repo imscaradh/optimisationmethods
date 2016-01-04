@@ -122,16 +122,25 @@ Der einfachste Fall liegt auf der Hand: Wir nehmen an, dass sich Punkt A und Pun
 Wir haben nun $m$ verwendet, welches sowohl $a$ und $b$ repräsentiert. $x$ dient als Strecke $d$. Die 1. Ableitung ergibt:
 
 \begin{align}
-    \frac{0.243902x}{\sqrt{m^2+x^2}}+\frac{-0.952381 m+0.47619 x}{\sqrt{5 m^2-4 m x+x^2}} 
+    \frac{0.243902x}{\sqrt{m^2+x^2}}+\frac{0.47619(2m-x)}{\sqrt{m^2+{2m-x}^2}}
 \end{align}
 
-Setzen wir diese Gleichung zu 0 und lösen nach $x$ auf, erhalten wir als Resultat:
+Setzen wir Gleichung (6) zu 0 und lösen nach $x$ auf, erhalten wir als Resultat:
 \[
     x = 1.5259m
 \]
 
+$m$ können wir nun frei wählen. Folgende Grafik veranschaulicht das Optimum, falls wir $m=100$ wählen:
 
-TODO-> Alle 4 Parameterberücksichtigen, Plots
+\pagebreak
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{lifeguard_100}
+    \caption{Rettungsschwimmer mit $m=100$}\label{lifeguard_100}
+\end{figure}
+
+Es ist ersichtlich, dass bei $y=0$ der Wert von $x$ bei $1.5259*100=152.59$ liegt.
+
 
 \subsection{Versicherungsprämienrechner}
 
