@@ -5,7 +5,7 @@ global ax
 
 
 def main():
-    fhelper.func = (input("Enter function: "))
+    fhelper.func = raw_input("Enter function: ")
     x1 = int(input("X1: "))
     x2 = int(input("X2: "))
 
@@ -32,7 +32,7 @@ def neldermead(x1, x2):
     xr = x1 + (x1 - x2)
     xe = x1 + 2 * (x1 - x2)
 
-    ax.plot((xc, xr), (fhelper.f(xc), fhelper.f(xr)), 'r-')
+    #ax.plot((xc, xr), (fhelper.f(xc), fhelper.f(xr)), 'r-')
 
     if fhelper.f(xr) > fhelper.f(x1):
         if fhelper.f(xe) > fhelper.f(x1):
