@@ -10,6 +10,11 @@
 \usepackage{listings}
 \usepackage{courier}
 
+\lstset{basicstyle=\footnotesize\ttfamily,
+    commentstyle=\color{Gray}\ttfamily,
+    belowcaptionskip=5em,
+    belowskip=4em,
+}
 \setcounter{secnumdepth}{4}
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
@@ -58,44 +63,9 @@ Der Algorithmus läuft in $O(m\sqrt{k})$
 
 Wir implementierten für diesen Algorithmus eine Schlaufe, welche mit unterschiedlichen Lambdas die Zeit misst. Dies setzten wir anhand der obigen Funktion $x^2$ um. Folgende Messwerte erhalten wir:\\
 
-\begin{lstlisting}
-Run with lambda = 0.0001 --------------------------------
-Result = -0.000005
-Took 4.716165 ms 
+\lstinputlisting[language=bash]{grad_time.out}
 
-Run with lambda = 0.0501 --------------------------------
-Result = -0.002247
-Took 0.005039 ms 
 
-Run with lambda = 0.1001 --------------------------------
-Result = -0.003930
-Took 0.002226 ms 
-
-Run with lambda = 0.1501 --------------------------------
-Result = -0.003967
-Took 0.001478 ms
-
-...
-
-Run with lambda = 0.5001 --------------------------------
-Result = -0.000000
-Took 0.000219 ms 
-
-Run with lambda = 0.5501 --------------------------------
-Result = -0.000504
-Took 0.000340 ms
-
-... 
-
-Run with lambda = 0.9501 --------------------------------
-Result = -0.039679
-Took 0.003178 ms 
-
-Run with lambda = 1.0001 --------------------------------
-\end{lstlisting}
-
-\bigbreak
-\bigbreak
 Wie wir aus dem obigen Output entnehmen können, sind sowohl $0.0001$ wie auch $1$ nicht sinnvoll für die Verwendung von Lambda. Die obigen Berechnungen wurden mit der quadratischen Funktion $x**2$ durchgeführt und als Anfangspunkt wurde $x=-5$ gwählt. Dieser hat jedoch keinen Einfluss, da die Berechnungen immer relativ zueinander stehen. 
 
 \paragraph{Bedingungen}
@@ -106,6 +76,11 @@ Der Algorithmus beginnt also vom Punkt $x=-5$ an, die 1. Ableitung zu berechnen.
 
 \subsubsection{Nelder-Mead}
 TODO
+
+\paragraph{Laufzeit}
+Der Algorithmus läuft im schlechtesten Fall in $O(n^2)$
+
+\paragraph{Bedingungen}
 
 
 \subsubsection{Nullstelle der Ableitung}
@@ -183,15 +158,25 @@ $m$ können wir nun frei wählen. Folgende Grafik veranschaulicht das Optimum, f
     \caption{Rettungsschwimmer mit $m=100$}\label{lifeguard_100}
 \end{figure}
 
-Es ist ersichtlich, dass bei $y=0$ der Wert von $x$ bei $1.5259*100=152.59$ liegt.
+Aus Abbildung~\ref{lifeguard_100} ist ersichtlich, an welcher Stelle $x$ optimal sein wird. Wie wir rechnersch bereits bewiesen haben, ist diese Extremalstelle, hier ein globales Minimum, die kürzeste mögliche Zeit, die der Retter zurücklegen wird. Wir haben nun die Lösung mathematisch mit der Gleichsetzung der 1. Ableitung zu 0 erhalten. 
 
 
 \subsection{Versicherungsprämienrechner}
 
 \section{Diskussion}
 \subsubsection{Anwendbarkeit der Methoden}
+Alle Methoden können als Hilfestellung für die Findung von Extremalstellen verwendet werden. Durch ihre unterschiedlichen Voraussetzungen ist aber nicht jede der Methoden gleich gut für eine Problemstellung geeignet. Beim Bisektionsalgorithmus ist die Voraussetzung, dass ein Intervall bekannt ist, in welchem eine Extremalstelle liegen muss. Ausserdem muss sichergestellt sein, dass nur eine solche Stelle darin liegt. Was zunächst als massive Einschränkung aufgenommen werden kann, kann in der Realität möglicherweise sogar als Vorteil betrachet werden, sofern die Punkte im Kontext einfach bestimmt werden können.\\
+Ähnlich wie der Bisektionsalgorithmus verhält sich das Gradientenverfahren. Bei dieser Methode ist vorausgsetzt, dass ein Punkt bekannt ist, welcher links von einer Extremalstelle liegt. Der Algorithmus könnte für eine bestimmte Anwendung so erweitert werden, dass ein Punkt gewählt wird, welcher über eine gefundene Extremalstelle hinaus weitersucht. Dort sieht sich aber die Gefahr, dass der nächste Punkt viel weiter weg sein könnte, was eine höhere Laufzeit zur Folge hätte.\\
+Beim Nelder-Mead Algorithmus sehen wir den Vorteil, dass wir ausser zwei frei wählbare Zahlen nichts benötigen, um eine Extremalstelle zu bestimmen. 
 \subsubsection{Vorteile}
 \subsubsection{Nachteile}
 \subsubsection{Gegenüberstellung der Laufzeiten}
+Einen direkten Vergleich der Laufzeiten an sich ist heikel. Wir können aus den obigen Diskussionen entnehmen, dass beim einfachen Gradientenverfahren ein Zeitverlust akzeptiert werden muss, falls der Startpunkt sich sehr weit von der Extremalstelle weg befindet. Anders als das Bisektions- und Gradientenverfahren verwendet der Nelder-Mead Algorithmus die 1. Ableitung nicht. Dies führt zu einem Zeitgewinn, welchen wir nicht direkt gemessen haben, aber trotzdem erahne lässt, dass dies ein Vorteil verschafft. 
+
+\section{Referenzen}
+\begin{list}{}{}
+\item http://www.b-landau.de/simplex-algorithmus/
+\end{list}
+
 
 \end{document}
