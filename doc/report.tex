@@ -59,9 +59,9 @@ Abbildung X verdeutlicht anhand der quadratischen Funtkion das `Abtasten' und An
 \end{figure}
 
 \paragraph{Laufzeit}
-Der Algorithmus läuft in $O(m\sqrt{k})$
+Da die Laufzeit von der Entfernung abhängt, welche zwischen dem gewählten Punkt und der Extremalstelle definiert ist, und wir des weiteren auch Lambda als Parameter berücksichtigen müssten, ist es uns nicht gelungen, die Laufzeit in der Big-Oh Notation auszudrücken.
 
-Wir implementierten für diesen Algorithmus eine Schlaufe, welche mit unterschiedlichen Lambdas die Zeit misst. Dies setzten wir anhand der obigen Funktion $x^2$ um. Folgende Messwerte erhalten wir:\\
+Dafür implementierten wir für diesen Algorithmus eine Schlaufe, welche mit unterschiedlichen Lambdas die Zeit misst. Dies setzten wir anhand der obigen Funktion $x^2$ um. Folgende Messwerte erhalten wir:\\
 
 \lstinputlisting[language=bash]{grad_time.out}
 
@@ -78,7 +78,7 @@ Der Algorithmus beginnt also vom Punkt $x=-5$ an, die 1. Ableitung zu berechnen.
 Der Nelder-Mead algrithmus versucht basierend auf zwei original gegebenen Punkten ein Extrema zu finden. Er erreicht das Ziel in dem er basierend auf den originalen Punkten weitere Punkte generiert und analysiert ob die Punkte kleiner (resp. grösser) sind und ruft sich dann erneut auf mit einem der extremeren Punkten.
 
 \paragraph{Laufzeit}
-Der Algorithmus läuft im schlechtesten Fall in $O(n^2)$
+Der Algorithmus läuft im schlechtesten Fall in $O(n^2)$ $^1$
 
 \paragraph{Bedingungen}
 Da der Nelder-Mead sich auch Punkte ausserhalb der angegebenen Punkte sucht muss die funktion auch ausserhalb dieser Punkte definiert sein oder allenfalls so konstruiert werden, dass diese Punkte nicht in Betracht gezogen werden.
