@@ -75,13 +75,13 @@ In Abbildung~\ref{gradientx} wird veranschaulicht, wie der Algorithmus funktioni
 Der Algorithmus beginnt also vom Punkt $x=-5$ an, die 1. Ableitung zu berechnen. Hat er diese berechnet und ist diese ungleich 0, so wird mit Lambda ein neuer Punkt definiert, welcher sich etwas weiter Rechts auf der x-Achse befindet. Der Algorithmus ist so aufgebaut, dass er eine gewisse Genauigkeit aufweisen muss, um eine Extremalstelle eindeutig zu identifizieren. Diese Genauigkeit muss *unbedingt* kleiner sein als Lambda, da sonst die Stelle einfach übersprungen werden kann.
 
 \subsubsection{Nelder-Mead}
-TODO
+Der Nelder-Mead algrithmus versucht basierend auf zwei original gegebenen Punkten ein Extrema zu finden. Er erreicht das Ziel in dem er basierend auf den originalen Punkten weitere Punkte generiert und analysiert ob die Punkte kleiner (resp. grösser) sind und ruft sich dann erneut auf mit einem der extremeren Punkten.
 
 \paragraph{Laufzeit}
 Der Algorithmus läuft im schlechtesten Fall in $O(n^2)$
 
 \paragraph{Bedingungen}
-
+Da der Nelder-Mead sich auch Punkte ausserhalb der angegebenen Punkte sucht muss die funktion auch ausserhalb dieser Punkte definiert sein oder allenfalls so konstruiert werden, dass diese Punkte nicht in Betracht gezogen werden.
 
 \subsubsection{Nullstelle der Ableitung}
 Durch den Bisektionsalgorithmus kann mithilfe der Ableitung eine Nullstelle, das heisst eine Extremalstelle ermittelt werden. Mithilfe eines anderen Algorithmus, in unserem Falle der Bisektionsalgorithmus, näheren wir uns ähnlich wie mit dem Gradientenverfahren an die Nullstelle an. 
@@ -162,16 +162,44 @@ Aus Abbildung~\ref{lifeguard_100} ist ersichtlich, an welcher Stelle $x$ optimal
 
 
 \subsection{Versicherungsprämienrechner}
-
+Eine Versicherung will herausfinden bei welcher Prämie ihr Gewinn maximal ist. Der Durchschnittliche Schadensbetrag der Kunden liegt bei 103CHF. Interpoliert man die zur Verfügung gestellten Daten erhält man folgende Graphen.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{customres}
+    \caption{Kunden im Bezug auf Prämien}\label{customers}
+\end{figure}
+Die Unterschiede zeigen sich durch Art der Interpolation. Es wurden eine Lineare, eine Quadratische und schlussendlich noch eine kubische Interpolation gemacht. \\
+Nun muss der Gesamtgewinn berechnet werden. Die Formel dafür ist schnell gefunden: $Gewinn = Pr\ddot{a}mie*Kunden - Schaden*Kunden$ Diese Formel sagt aleine sehr wenig aus. Der entscheidende Faktor hierbei ist die Anzahl Kunden, welche wir noch haben bei einer Prämie. Also ist die Funktion um die Kunden im verhältnis zur prämie herauszufinden um einiges relevanter für diesen Anwendungsfall.
+Je nach verwendeter Interpolationsart erhält man verschiedene Resultate: \\
+\begin{itemize}
+    \item Linear: Bei einer Prämie von 181CHF wird ein Gewinn von 340392CHF erwirtschaftet.
+    \item Quadratisch: Bei einer Prämie von 184CHF wird ein Gewinn von 323214CHF erwirtschaftet.
+    \item Kubisch: Bei einer Prämie von 187CHF wird ein Gewinn von 323051CHF erwirtschaftet.
+\end{itemize}
+Den Unterschied in den Prämien und dem Profit kann in diesem Grafen gut erkannt werden.
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[width=0.9\textwidth]{profit}
+    \caption{Der Gesamtgewinn}
+    \label{fig:figure1}
+\end{figure}
+Mann erkennt, das die lineare Interpolation zu einigen Ecken in der Kurve führt, was hier sicher nicht das gewünschte Resultat ist, ausser wenn diese ein spezifisches Ereigniss darstellen.(z.b. man wird teurer als eine andere Versicherung.) Da dies hier wahrscheinlich nicht der Fall ist, kann die Lineare Version meiner meinung nach ignoriert werden. Der Unterschied zwischen der quadratischen und kubischen Implementation bei der Prämie, welche den höchsten Gewinn erziehlt liegt bei 3CHF und kann ebenfalls ignoriert werden.
+\subsubsection{Diskussion des Resultats} % (fold)
+\label{ssub:diskussion_des_resultats}
+Das erhaltene Resultat funktioniert aus meiner Sicht nur für eine Versicherung möglich, welche ein Monopol auf dem Gebiet hat, in welchem Sie agiert. Dies ist klar erkennbar daran, dass die Kunden im verhältnis zur Prämie eine schöne Funktion bilden. Bei einer Versicherung mit Konkurenz sollten eigentlich Einbrüche erkennbar sein, wenn man Teurer als eine andere Versicherung wird und diese über den selben Umfang verfügt. \\
+Generell ist es nicht gut die Prämie generell über alle Kunden zu mitteln. Schon alleine durch den Fahrzeug wert kann ein riesiger Unterschied entstechen. Ein kunde mit seinem Fünfzehn jährigen Opel wird bei einem Totalschaden weit weniger Kosten verursachen als ein Kunde mit einem Brandneuen Ferarri.
+Ausserdem ist es eine äusserst naive Ansicht dem Kunden, welcher seit Jahren Unfallfrei fährt die selbe Prämie abzuverlangen wie der Person, welche in diesem Jahr schon zwei Unfälle hatte. Das Riskio das der Erstgenannte in diesem Jahr einen Unfall baut ist wesentlich geringer und ausserdem hat er diesen Schaden über Jahre abbezahlt.\\
+Allgemein ist es ein sehr grundsätzliches Modell, welches in der Praxis so nicht verwendet werden kann.
+% subsubsection diskussion_des_resultats (end)
 \section{Diskussion}
 \subsubsection{Anwendbarkeit der Methoden}
 Alle Methoden können als Hilfestellung für die Findung von Extremalstellen verwendet werden. Durch ihre unterschiedlichen Voraussetzungen ist aber nicht jede der Methoden gleich gut für eine Problemstellung geeignet. Beim Bisektionsalgorithmus ist die Voraussetzung, dass ein Intervall bekannt ist, in welchem eine Extremalstelle liegen muss. Ausserdem muss sichergestellt sein, dass nur eine solche Stelle darin liegt. Was zunächst als massive Einschränkung aufgenommen werden kann, kann in der Realität möglicherweise sogar als Vorteil betrachet werden, sofern die Punkte im Kontext einfach bestimmt werden können.\\
 Ähnlich wie der Bisektionsalgorithmus verhält sich das Gradientenverfahren. Bei dieser Methode ist vorausgsetzt, dass ein Punkt bekannt ist, welcher links von einer Extremalstelle liegt. Der Algorithmus könnte für eine bestimmte Anwendung so erweitert werden, dass ein Punkt gewählt wird, welcher über eine gefundene Extremalstelle hinaus weitersucht. Dort sieht sich aber die Gefahr, dass der nächste Punkt viel weiter weg sein könnte, was eine höhere Laufzeit zur Folge hätte.\\
-Beim Nelder-Mead Algorithmus sehen wir den Vorteil, dass wir ausser zwei frei wählbare Zahlen nichts benötigen, um eine Extremalstelle zu bestimmen. 
+Beim Nelder-Mead Algorithmus sehen wir den Vorteil, dass wir ausser zwei frei wählbare Zahlen nichts benötigen, um eine Extremalstelle zu bestimmen.
 \subsubsection{Vorteile}
 \subsubsection{Nachteile}
 \subsubsection{Gegenüberstellung der Laufzeiten}
-Einen direkten Vergleich der Laufzeiten an sich ist heikel. Wir können aus den obigen Diskussionen entnehmen, dass beim einfachen Gradientenverfahren ein Zeitverlust akzeptiert werden muss, falls der Startpunkt sich sehr weit von der Extremalstelle weg befindet. Anders als das Bisektions- und Gradientenverfahren verwendet der Nelder-Mead Algorithmus die 1. Ableitung nicht. Dies führt zu einem Zeitgewinn, welchen wir nicht direkt gemessen haben, aber trotzdem erahne lässt, dass dies ein Vorteil verschafft. 
+Einen direkten Vergleich der Laufzeiten an sich ist heikel. Wir können aus den obigen Diskussionen entnehmen, dass beim einfachen Gradientenverfahren ein Zeitverlust akzeptiert werden muss, falls der Startpunkt sich sehr weit von der Extremalstelle weg befindet. Anders als das Bisektions- und Gradientenverfahren verwendet der Nelder-Mead Algorithmus die 1. Ableitung nicht. Dies führt zu einem Zeitgewinn, welchen wir nicht direkt gemessen haben, aber trotzdem erahne lässt, dass dies ein Vorteil verschafft.
 
 \section{Referenzen}
 \begin{list}{}{}
