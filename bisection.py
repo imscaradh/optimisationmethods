@@ -14,7 +14,8 @@ def main():
     fig = plt.figure()
     global ax
     ax = fig.add_subplot(111)
-    ax.plot(x_range, [fhelper.f(value) for value in x_range])
+    plt_func, = ax.plot(x_range, [fhelper.f(value) for value in x_range], label=fhelper.func)
+    plt.legend(handles=[plt_func])
 
     ax.plot((a, a), (0, fhelper.f(a) + 30), 'r-')
     ax.plot((b, b), (0, fhelper.f(b) + 30), 'r-')

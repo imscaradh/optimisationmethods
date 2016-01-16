@@ -4,22 +4,25 @@ import matplotlib.pyplot as plt
 import time
 
 
-def algorithm(lmbda):
+def algorithm(point, lmbda):
     fhelper.func = "x**2"  # raw_input("Enter function: ")
 
     x_range = np.arange(-50, 50)
     fig = plt.figure()
     ax = fig.add_subplot(111)
-    ax.plot(x_range, [fhelper.f(value) for value in x_range])
 
-    point = -5
+    plt_func, = ax.plot(x_range, [fhelper.f(value) for value in x_range], label=fhelper.func)
+    plt.legend(handles=[plt_func])
+
+    # Algorithm
     df_result = fhelper.df(point)
-    while abs(df_result) > lmbda * 0.1:
+    while abs(df_result) > abs(lmbda * 0.1):
         df_result = fhelper.df(point)
         point -= lmbda * df_result
 
     print("Extremalstelle bei x = %f" % point)
 
+    # Plot approximation
     point1 = -40
     x_range_tan = np.arange(point1 - 20, point1 + 20)
     ax.plot(x_range_tan, fhelper.tan(x_range_tan, point1))
@@ -38,7 +41,8 @@ def algorithm(lmbda):
 
 
 def main():
-    algorithm(0.001)
+    algorithm(-5, 0.01)
+    
     # values = np.arange(0.0001, 2, 0.05)
     # for lmdba in values:
     # print("Run with lambda = %s --------------------------------" % lmdba)
