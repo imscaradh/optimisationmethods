@@ -7,14 +7,11 @@
 \usepackage[german]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{titlesec}
-\usepackage{listings}
 \usepackage{courier}
+\usepackage{textcomp}
+\usepackage[procnames]{listings}
+\usepackage{color}
 
-\lstset{basicstyle=\footnotesize\ttfamily,
-    commentstyle=\color{Gray}\ttfamily,
-    belowcaptionskip=5em,
-    belowskip=4em,
-}
 \setcounter{secnumdepth}{4}
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
@@ -31,10 +28,22 @@
 
 \begin{document}
 
+\definecolor{keywords}{RGB}{131,0,90}
+\definecolor{comments}{RGB}{88,88,88}
+\definecolor{blue}{RGB}{17,51,160}
+\definecolor{green}{RGB}{0,120,0}
+
+
+\lstset{basicstyle=\footnotesize\ttfamily,
+    commentstyle=\color{Gray}\ttfamily,
+    belowcaptionskip=5em,
+    belowskip=4em,
+}
+
 \maketitle
 
 \section{Einführung}
-Im Rahmen des Kurses Analysis haben wir uns mit verschiednen Optimierungsaufgaben vertraut gemacht. Die grundlegende Technik, die wir dazu verwendeten, war die 1. Ableitung gleich 0 zu setzen, damit wir ein optimales Ergebnis für ein konkretes Problem erhielten. In diesem Bericht befassen wir uns näher mit Algorithmen, welche es ermöglichen Extremalstellen zu berechnen. Zudem diskutieren wir anhand von diversen Aufgabenstellungen, wie diese zur Anwendung kommen können. Durch diverse Visualisierungen versuchen wir mit diesem Bericht versuchen wir die Ergebnisse bildlich darzustellen, was aus unserer Sicht auch zu einer glaubwürdigeren Diskussion führen wird.
+Im Rahmen des Kurses Analysis haben wir uns mit verschiednen Optimierungsaufgaben vertraut gemacht. Die grundlegende Technik, die wir dazu verwendeten, war die 1. Ableitung gleich 0 zu setzen, damit wir ein optimales Ergebnis für ein konkretes Problem erhielten. In diesem Bericht befassen wir uns näher mit Algorithmen, welche es ermöglichen Extremalstellen zu berechnen. Zudem diskutieren wir anhand von diversen Aufgabenstellungen, wie diese zur Anwendung kommen können. Durch diverse Visualisierungen versuchen wir mit diesem Bericht versuchen wir die Ergebnisse bildlich darzustellen, was aus unserer Sicht auch zu einer glaubwürdigeren Diskussion führen wird und die Probleme gut veranschaulichen lassen.
 
 \section{Motivation}
 Da es in unserer Umgebung sehr viele Problemstellungen gibt, bei denen jeweils ein Optimum gesucht ist, sehen wir in dieser Arbeit eine konkrete und relativ einfache Anwendung der Ableitungen. Die Algorithmen, welche wir mit Python umgsetzt haben, sind wiederverwendbar, da wir sie so weit als möglich versuchten, zu parametrisieren. 
@@ -50,7 +59,7 @@ Durch diese Methode wird im generellen versucht, sich an eine Extremalstelle anz
     f(x)=x^2
 \]
 
-Abbildung X verdeutlicht anhand der quadratischen Funtkion das `Abtasten' und Annähern an eine Extremalstelle. Durch das festgesetzte Lambda wir die Granularität festgesetzt, also den Abstand zum vorangehenden Punkt. Dies hat natürlich Konsequenzen auf die Laufzeit unseres Algorithmus. Wir werden die Laufzeiten der verschiednen Verfahren in den nachfolgenden Kapitel gegenüberstellen und auswerten. 
+Abbildung~\ref{gradientx} verdeutlicht anhand der quadratischen Funtkion das `Abtasten' und Annähern an eine Extremalstelle. Durch das festgesetzte Lambda wird das Offset für die verschiedenen Punkte festgesetzt. Dies hat je nach Konfiguration dieses Parameters Konsequenzen auf die Laufzeit unseres Algorithmus. Im nachfolgenden Abschnitt werden wir versuchen, Lambda sinnvoll zu bestimmen.
 
 \begin{figure}[!ht]
     \centering
@@ -59,32 +68,39 @@ Abbildung X verdeutlicht anhand der quadratischen Funtkion das `Abtasten' und An
 \end{figure}
 
 \paragraph{Laufzeit}
-Der Algorithmus läuft in $O(m\sqrt{k})$
+Da die Laufzeit von der Entfernung abhängt, welche zwischen dem gewählten Punkt und der Extremalstelle definiert ist, und wir des weiteren auch Lambda als Parameter berücksichtigen müssten, ist es uns nicht gelungen, die Laufzeit in der Big-O Notation auszudrücken.
 
-Wir implementierten für diesen Algorithmus eine Schlaufe, welche mit unterschiedlichen Lambdas die Zeit misst. Dies setzten wir anhand der obigen Funktion $x^2$ um. Folgende Messwerte erhalten wir:\\
+Dafür implementierten wir für diesen Algorithmus eine Schlaufe, welche mit unterschiedlichen Lambdas die Zeit misst. Dies setzten wir anhand der obigen Funktion $x^2$ um. Folgende Messwerte erhalten wir:\\
 
 \lstinputlisting[language=bash]{grad_time.out}
 
 
-Wie wir aus dem obigen Output entnehmen können, sind sowohl $0.0001$ wie auch $1$ nicht sinnvoll für die Verwendung von Lambda. Die obigen Berechnungen wurden mit der quadratischen Funktion $x**2$ durchgeführt und als Anfangspunkt wurde $x=-5$ gwählt. Dieser hat jedoch keinen Einfluss, da die Berechnungen immer relativ zueinander stehen. 
+Die obigen Berechnungen wurden mit der quadratischen Funktion $x**2$ durchgeführt und als Anfangspunkt wurde $x=-5$ gwählt. Dieser hat jedoch keinen Einfluss, da die Berechnungen immer relativ zueinander stehen. 
+Wie wir aus dem Output entnehmen können, sind sowohl $0.0001$ wie auch $1$ nicht sinnvoll für die Verwendung von Lambda. Zum Einen ist bei der Wahl eines kleinen Wertes für Lambda die Laufzeit stark negativ beeinträchtigt. Jedoch ist das Resultat sehr genau. Wählen wir eine grössere Zahl für Lamdba, so ist ersichtlich, dass die Genauigkeit nicht mehr gewährleistet ist, da der Algorithmus in grösseren Schriten sich an die Nullstelle annähert. 
 
 \paragraph{Bedingungen}
-In Abbildung~\ref{gradientx} wird veranschaulicht, wie der Algorithmus funktioniert. Als Vorbedingung ist ein Startpunkt notwenig, welcher zwingend links von einer Extremalstelle liegt. Ausserdem muss mit diesem trivialen Algorithmus vorher sichergestellt werden, dass die Funktion überhaupt Extremalstellen besitzt, was ansosten zu einem unendlichen Loop führen kann. In unserem Beispiel mit der quadratischen Funktion $x^2$ wählen wir zum Beispiel den Punkt $x=-5$ aus. Wir können uns versichern, dass der Punkt links von einer Extremalstelle liegt und die Funktion überhaupt eine Extremalstelle besitzt. Natürlich ist diese von blossem Auge sofort erkennbar. 
+In Abbildung~\ref{gradientx} wird veranschaulicht, wie der Algorithmus funktioniert. Als Vorbedingung ist ein Startpunkt notwenig, welcher zwingend links von einer Extremalstelle liegt. Ausserdem muss mit diesem trivialen Algorithmus vorher sichergestellt werden, dass die Funktion überhaupt Extremalstellen besitzt, was ansosten zu einem unendlichen Loop führen kann. Des Weiteren sagt das Vorzeichen von Lambda aus, nach welcher Art von Extremstelle gesucht werden soll. In unserem Beispiel mit der quadratischen Funktion $x^2$ wählen wir zum Beispiel den Punkt $x=-5$ aus. Wir können uns versichern, dass der Punkt links von einer Extremalstelle (links) liegt und die Funktion überhaupt eine Extremalstelle besitzt. Natürlich ist diese von blossem Auge sofort erkennbar. 
+Wir fassen zusammen:
+\begin{itemize}
+\item Punkt muss links von Extremalstelle liegen
+\item Typ von gesuchter Extremalstelle muss bekannt sein (Minimum oder Maximum)
+\item Lambda wird wie folgt gewählt: $Lambda > 0 = Minimumsuche, Lambda > 0 = Maximumsuche$
+\end{itemize}
 
 \paragraph{Funktion von Lambda}
-Der Algorithmus beginnt also vom Punkt $x=-5$ an, die 1. Ableitung zu berechnen. Hat er diese berechnet und ist diese ungleich 0, so wird mit Lambda ein neuer Punkt definiert, welcher sich etwas weiter Rechts auf der x-Achse befindet. Der Algorithmus ist so aufgebaut, dass er eine gewisse Genauigkeit aufweisen muss, um eine Extremalstelle eindeutig zu identifizieren. Diese Genauigkeit muss *unbedingt* kleiner sein als Lambda, da sonst die Stelle einfach übersprungen werden kann.
+Der Algorithmus beginnt also vom Punkt $x=-5$ an, die 1. Ableitung zu berechnen. Hat er diese berechnet und ist diese ungleich 0, so wird mit Lambda ein neuer Punkt definiert, welcher sich etwas weiter Rechts auf der x-Achse befindet. Der Algorithmus ist so aufgebaut, dass er eine gewisse Genauigkeit aufweisen muss, um eine Extremalstelle eindeutig zu identifizieren. Diese Genauigkeit muss unbedingt kleiner sein als Lambda, da sonst die Stelle einfach übersprungen werden kann.
 
 \subsubsection{Nelder-Mead}
-Der Nelder-Mead algrithmus versucht basierend auf zwei original gegebenen Punkten ein Extrema zu finden. Er erreicht das Ziel in dem er basierend auf den originalen Punkten weitere Punkte generiert und analysiert ob die Punkte kleiner (resp. grösser) sind und ruft sich dann erneut auf mit einem der extremeren Punkten.
+Der Nelder-Mead Algrithmus versucht basierend auf zwei original gegebenen Punkten ein Extrema zu finden. Er erreicht das Ziel in dem er basierend auf den originalen Punkten weitere Punkte generiert und analysiert, ob die Punkte kleiner (respektive grösser) sind und ruft sich dann erneut auf mit einem der extremeren Punkten.
 
 \paragraph{Laufzeit}
-Der Algorithmus läuft im schlechtesten Fall in $O(n^2)$
+Der Algorithmus läuft im schlechtesten Fall in $O(n^2)$ $^1$
 
 \paragraph{Bedingungen}
-Da der Nelder-Mead sich auch Punkte ausserhalb der angegebenen Punkte sucht muss die funktion auch ausserhalb dieser Punkte definiert sein oder allenfalls so konstruiert werden, dass diese Punkte nicht in Betracht gezogen werden.
+Da der Nelder-Mead sich auch Punkte ausserhalb der angegebenen Punkte sucht, muss die Funktion auch ausserhalb dieser Punkte definiert sein oder allenfalls so konstruiert werden, dass diese Punkte nicht in Betracht gezogen werden.
 
 \subsubsection{Nullstelle der Ableitung}
-Durch den Bisektionsalgorithmus kann mithilfe der Ableitung eine Nullstelle, das heisst eine Extremalstelle ermittelt werden. Mithilfe eines anderen Algorithmus, in unserem Falle der Bisektionsalgorithmus, näheren wir uns ähnlich wie mit dem Gradientenverfahren an die Nullstelle an. 
+Durch den Bisektionsalgorithmus kann mithilfe der Ableitung eine Nullstelle, dass heisst eine Extremalstelle ermittelt werden. Durch den Gebrauch eines anderen Algorithmus, in unserem Falle der Bisektionsalgorithmus, näheren wir uns ähnlich wie mit dem Gradientenverfahren an die Nullstelle an. 
 
 \begin{figure}[!ht]
     \centering
@@ -162,28 +178,27 @@ Aus Abbildung~\ref{lifeguard_100} ist ersichtlich, an welcher Stelle $x$ optimal
 
 
 \subsection{Versicherungsprämienrechner}
-Eine Versicherung will herausfinden bei welcher Prämie ihr Gewinn maximal ist. Der Durchschnittliche Schadensbetrag der Kunden liegt bei 103CHF. Interpoliert man die zur Verfügung gestellten Daten erhält man folgende Graphen.
+Eine Versicherung will herausfinden bei welcher Prämie ihr Gewinn maximal ist. Der Durchschnittliche Schadensbetrag der Kunden liegt bei CHF 103. Interpoliert man die zur Verfügung gestellten Daten erhält man folgende Graphen.
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.9\textwidth]{customres}
     \caption{Kunden im Bezug auf Prämien}\label{customers}
 \end{figure}
 Die Unterschiede zeigen sich durch Art der Interpolation. Es wurden eine Lineare, eine Quadratische und schlussendlich noch eine kubische Interpolation gemacht. \\
-Nun muss der Gesamtgewinn berechnet werden. Die Formel dafür ist schnell gefunden: $Gewinn = Pr\ddot{a}mie*Kunden - Schaden*Kunden$ Diese Formel sagt aleine sehr wenig aus. Der entscheidende Faktor hierbei ist die Anzahl Kunden, welche wir noch haben bei einer Prämie. Also ist die Funktion um die Kunden im verhältnis zur prämie herauszufinden um einiges relevanter für diesen Anwendungsfall.
+Nun muss der Gesamtgewinn berechnet werden. Die Formel dafür ist schnell gefunden: $Gewinn = Pr\ddot{a}mie * Kunden - Schaden*Kunden$ Diese Formel sagt aleine sehr wenig aus. Der entscheidende Faktor hierbei ist die Anzahl Kunden, welche wir noch haben bei einer Prämie. Also ist die Funktion um die Kunden im verhältnis zur prämie herauszufinden um einiges relevanter für diesen Anwendungsfall.
 Je nach verwendeter Interpolationsart erhält man verschiedene Resultate: \\
 \begin{itemize}
-    \item Linear: Bei einer Prämie von 181CHF wird ein Gewinn von 340392CHF erwirtschaftet.
-    \item Quadratisch: Bei einer Prämie von 184CHF wird ein Gewinn von 323214CHF erwirtschaftet.
-    \item Kubisch: Bei einer Prämie von 187CHF wird ein Gewinn von 323051CHF erwirtschaftet.
+    \item Linear: Bei einer Prämie von CHF 181 wird ein Gewinn von CHF 340'392 erwirtschaftet.
+    \item Quadratisch: Bei einer Prämie von CHF 184 wird ein Gewinn von CHF 323'214 erwirtschaftet.
+    \item Kubisch: Bei einer Prämie von CHF 187 wird ein Gewinn von CHF 323'051 erwirtschaftet.
 \end{itemize}
 Den Unterschied in den Prämien und dem Profit kann in diesem Grafen gut erkannt werden.
 \begin{figure}[!ht]
     \centering
     \includegraphics[width=0.9\textwidth]{profit}
-    \caption{Der Gesamtgewinn}
-    \label{fig:figure1}
+    \caption{Der Gesamtgewinn}\label{fig:figure1}
 \end{figure}
-Mann erkennt, das die lineare Interpolation zu einigen Ecken in der Kurve führt, was hier sicher nicht das gewünschte Resultat ist, ausser wenn diese ein spezifisches Ereigniss darstellen.(z.b. man wird teurer als eine andere Versicherung.) Da dies hier wahrscheinlich nicht der Fall ist, kann die Lineare Version meiner meinung nach ignoriert werden. Der Unterschied zwischen der quadratischen und kubischen Implementation bei der Prämie, welche den höchsten Gewinn erziehlt liegt bei 3CHF und kann ebenfalls ignoriert werden.
+Mann erkennt, das die lineare Interpolation zu einigen Ecken in der Kurve führt, was hier sicher nicht das gewünschte Resultat ist, ausser wenn diese ein spezifisches Ereigniss darstellen (zum Beispiel man wird teurer als eine andere Versicherung.) Da dies hier wahrscheinlich nicht der Fall ist, kann die Lineare Version meiner meinung nach ignoriert werden. Der Unterschied zwischen der quadratischen und kubischen Implementation bei der Prämie, welche den höchsten Gewinn erziehlt liegt bei CHF 3 und kann ebenfalls ignoriert werden.
 \subsubsection{Diskussion des Resultats} % (fold)
 \label{ssub:diskussion_des_resultats}
 Das erhaltene Resultat funktioniert aus meiner Sicht nur für eine Versicherung möglich, welche ein Monopol auf dem Gebiet hat, in welchem Sie agiert. Dies ist klar erkennbar daran, dass die Kunden im verhältnis zur Prämie eine schöne Funktion bilden. Bei einer Versicherung mit Konkurenz sollten eigentlich Einbrüche erkennbar sein, wenn man Teurer als eine andere Versicherung wird und diese über den selben Umfang verfügt. \\
@@ -196,15 +211,45 @@ Allgemein ist es ein sehr grundsätzliches Modell, welches in der Praxis so nich
 Alle Methoden können als Hilfestellung für die Findung von Extremalstellen verwendet werden. Durch ihre unterschiedlichen Voraussetzungen ist aber nicht jede der Methoden gleich gut für eine Problemstellung geeignet. Beim Bisektionsalgorithmus ist die Voraussetzung, dass ein Intervall bekannt ist, in welchem eine Extremalstelle liegen muss. Ausserdem muss sichergestellt sein, dass nur eine solche Stelle darin liegt. Was zunächst als massive Einschränkung aufgenommen werden kann, kann in der Realität möglicherweise sogar als Vorteil betrachet werden, sofern die Punkte im Kontext einfach bestimmt werden können.\\
 Ähnlich wie der Bisektionsalgorithmus verhält sich das Gradientenverfahren. Bei dieser Methode ist vorausgsetzt, dass ein Punkt bekannt ist, welcher links von einer Extremalstelle liegt. Der Algorithmus könnte für eine bestimmte Anwendung so erweitert werden, dass ein Punkt gewählt wird, welcher über eine gefundene Extremalstelle hinaus weitersucht. Dort sieht sich aber die Gefahr, dass der nächste Punkt viel weiter weg sein könnte, was eine höhere Laufzeit zur Folge hätte.\\
 Beim Nelder-Mead Algorithmus sehen wir den Vorteil, dass wir ausser zwei frei wählbare Zahlen nichts benötigen, um eine Extremalstelle zu bestimmen.
-\subsubsection{Vorteile}
-\subsubsection{Nachteile}
+\subsubsection{Vorteile/Nachteile}
+Für die Gegenüberstellung von Vor- und Nachteilen der einzelnen Algorithmen muss deutlich hervorgehoben werden, dass der Anwendungsbereich bestimmt, welcher Algorithmus sich am Besten eignet. Generell kann man sagen, dass der Nelder-Mead Algorithmus dank den wenigen zu erfüllenden Vorbedingungen wohl als beste Lösung abschneidet. 
 \subsubsection{Gegenüberstellung der Laufzeiten}
 Einen direkten Vergleich der Laufzeiten an sich ist heikel. Wir können aus den obigen Diskussionen entnehmen, dass beim einfachen Gradientenverfahren ein Zeitverlust akzeptiert werden muss, falls der Startpunkt sich sehr weit von der Extremalstelle weg befindet. Anders als das Bisektions- und Gradientenverfahren verwendet der Nelder-Mead Algorithmus die 1. Ableitung nicht. Dies führt zu einem Zeitgewinn, welchen wir nicht direkt gemessen haben, aber trotzdem erahne lässt, dass dies ein Vorteil verschafft.
 
 \section{Referenzen}
 \begin{list}{}{}
-\item http://www.b-landau.de/simplex-algorithmus/
+\item $^1$ http://www.b-landau.de/simplex-algorithmus/
 \end{list}
 
+\pagebreak
+\section{Anhang}
+
+\lstset{language=Python,
+        breaklines=true,
+        basicstyle=\ttfamily\small,
+        keywordstyle=\color{keywords},
+        commentstyle=\color{comments},
+        stringstyle=\color{green},
+        showstringspaces=false,
+        identifierstyle=\color{blue},
+        procnamekeys={def,class}}
+
+\subsubsection{Hilfsklasse für Funktionshandling}
+\lstinputlisting[language=Python]{../functionhelper/function.py}
+
+\subsubsection{Gradientenverfahren}
+\lstinputlisting[language=Python]{../gradientenverfahren.py}
+
+\subsubsection{Nelder-Mead}
+\lstinputlisting[language=Python]{../neldermead.py}
+
+\subsubsection{Bisektionsverfahren}
+\lstinputlisting[language=Python]{../bisection.py}
+
+\subsubsection{Rettungsschwimmeraufgabe}
+\lstinputlisting[language=Python]{../lifeguard.py}
+
+\subsubsection{Versicherungsaufgabe}
+\lstinputlisting[language=Python]{../insurance.py}
 
 \end{document}
