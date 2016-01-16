@@ -7,14 +7,11 @@
 \usepackage[german]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{titlesec}
-\usepackage{listings}
 \usepackage{courier}
+\usepackage{textcomp}
+\usepackage[procnames]{listings}
+\usepackage{color}
 
-\lstset{basicstyle=\footnotesize\ttfamily,
-    commentstyle=\color{Gray}\ttfamily,
-    belowcaptionskip=5em,
-    belowskip=4em,
-}
 \setcounter{secnumdepth}{4}
 \titleformat{\paragraph}
 {\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
@@ -30,6 +27,18 @@
 %%%%% The Document
 
 \begin{document}
+
+\definecolor{keywords}{RGB}{131,0,90}
+\definecolor{comments}{RGB}{88,88,88}
+\definecolor{blue}{RGB}{17,51,160}
+\definecolor{green}{RGB}{0,120,0}
+
+
+\lstset{basicstyle=\footnotesize\ttfamily,
+    commentstyle=\color{Gray}\ttfamily,
+    belowcaptionskip=5em,
+    belowskip=4em,
+}
 
 \maketitle
 
@@ -212,5 +221,35 @@ Einen direkten Vergleich der Laufzeiten an sich ist heikel. Wir können aus den 
 \item $^1$ http://www.b-landau.de/simplex-algorithmus/
 \end{list}
 
+\pagebreak
+\section{Anhang}
+
+\lstset{language=Python,
+        breaklines=true,
+        basicstyle=\ttfamily\small,
+        keywordstyle=\color{keywords},
+        commentstyle=\color{comments},
+        stringstyle=\color{green},
+        showstringspaces=false,
+        identifierstyle=\color{blue},
+        procnamekeys={def,class}}
+
+\subsubsection{Hilfsklasse für Funktionshandling}
+\lstinputlisting[language=Python]{../functionhelper/function.py}
+
+\subsubsection{Gradientenverfahren}
+\lstinputlisting[language=Python]{../gradientenverfahren.py}
+
+\subsubsection{Nelder-Mead}
+\lstinputlisting[language=Python]{../neldermead.py}
+
+\subsubsection{Bisektionsverfahren}
+\lstinputlisting[language=Python]{../bisection.py}
+
+\subsubsection{Rettungsschwimmeraufgabe}
+\lstinputlisting[language=Python]{../lifeguard.py}
+
+\subsubsection{Versicherungsaufgabe}
+\lstinputlisting[language=Python]{../insurance.py}
 
 \end{document}

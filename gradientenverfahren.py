@@ -5,7 +5,7 @@ import time
 
 
 def algorithm(point, lmbda):
-    fhelper.func = "x**2"  # raw_input("Enter function: ")
+    fhelper.func = "x**2" # raw_input("Enter function: ")
 
     x_range = np.arange(-50, 50)
     fig = plt.figure()
