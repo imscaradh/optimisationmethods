@@ -91,7 +91,7 @@ Wir fassen zusammen:
 Der Algorithmus beginnt also vom Punkt $x=-5$ an, die 1. Ableitung zu berechnen. Hat er diese berechnet und ist diese ungleich 0, so wird mit Lambda ein neuer Punkt definiert, welcher sich etwas weiter Rechts auf der x-Achse befindet. Der Algorithmus ist so aufgebaut, dass er eine gewisse Genauigkeit aufweisen muss, um eine Extremalstelle eindeutig zu identifizieren. Diese Genauigkeit muss unbedingt kleiner sein als Lambda, da sonst die Stelle einfach übersprungen werden kann.
 
 \subsubsection{Nelder-Mead}
-Der Nelder-Mead Algrithmus versucht basierend auf zwei original gegebenen Punkten ein Extrema zu finden. Er erreicht das Ziel in dem er basierend auf den originalen Punkten weitere Punkte generiert und analysiert, ob die Punkte kleiner (respektive grösser) sind und ruft sich dann erneut auf mit einem der extremeren Punkten.
+Der Nelder-Mead Algrithmus versucht basierend auf zwei original gegebenen Punkten ein Extrema zu finden. Er erreicht das Ziel in dem er basierend auf den originalen Punkten weitere Punkte generiert und analysiert, ob die Punkte kleiner (respektive grösser) sind und ruft sich dann erneut auf mit einem der extremeren Punkten. Aufgrund dieser Funktionsart findet der Nelder-Mead entweder Maximas oder Minimas aber nicht beide zusammen. Da bei der Versicherungsaufgabe der Gewinn gesucht wird, haben wir den Nelder-Mead auf die Suche von Maximas ausgelegt.
 
 \paragraph{Laufzeit}
 Der Algorithmus läuft im schlechtesten Fall in $O(n^2)$ $^1$
